@@ -1,3 +1,6 @@
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -5,10 +8,19 @@ import java.util.Date;
 @Table(name = "ITEM")
 public class Item {
 
+    @JsonIgnore
     private long id;
+
+    @JsonProperty("name")
     private String name;
+
+    @JsonProperty("dateCreated")
     private Date dateCreated;
+
+    @JsonProperty("lastUpdatedDate")
     private Date lastUpdatedDate;
+
+    @JsonProperty("description")
     private String description;
 
     @Id
@@ -22,6 +34,7 @@ public class Item {
     public void setId(long id) {
         this.id = id;
     }
+
 
     @Column(name = "NAME")
     public String getName() {
