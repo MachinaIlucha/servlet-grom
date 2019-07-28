@@ -1,5 +1,5 @@
+import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jdk.nashorn.internal.parser.JSONParser;
 import org.json.simple.JSONObject;
 
 import javax.servlet.ServletException;
@@ -9,9 +9,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.InputStream;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Map;
 
 @WebServlet(urlPatterns = "/test")
@@ -29,14 +26,16 @@ public class MyServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        JSONObject jsonObj = requestParamsToJSON(req);
-        ItemDAO.save(getItem(jsonObj));
+        // JSONObject jsonObj = requestParamsToJSON(req);
+        ObjectMapper objectMapper = new ObjectMapper();
+        Item item = objectMapper.readValue((JsonParser) req, Item.class);
+        ItemDAO.save(item);
     }
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        JSONObject jsonObj = requestParamsToJSON(req);
-        ItemDAO.update(getItem(jsonObj));
+        ObjectMapper objectMapper = new ObjectMapper();
+        ItemDAO.update(objectMapper.readValue(req.toString(), Item.class));
     }
 
     @Override
@@ -58,41 +57,4 @@ public class MyServlet extends HttpServlet {
     // DELETE - delete info
 
     //CRUD
-
-
-    /****************************************************************************************************************/
-
-    public JSONObject requestParamsToJSON(ServletRequest req) {
-        JSONObject jsonObj = new JSONObject();
-        Map<String, String[]> params = req.getParameterMap();
-        for (Map.Entry<String, String[]> entry : params.entrySet()) {
-            String v[] = entry.getValue();
-            Object o = (v.length == 1) ? v[0] : v;
-            jsonObj.put(entry.getKey(), o);
-        }
-        return jsonObj;
-    }
-
-    private Item getItem(JSONObject jsonObj) throws IOException {
-        Item item = new ObjectMapper().readValue(jsonObj.toString(), Item.class);
-
-//        //String id = req.getParameter("id");
-//        String name = req.getParameter("name");
-//        String dateCreated = req.getParameter("dateCreated");
-//        String lastUpdatedDate = req.getParameter("lastUpdatedDate");
-//        String description = req.getParameter("description");
-//
-//        Item item = new Item();
-//        //item.setId(Long.parseLong(id));
-//        item.setName(name);
-//        try {
-//            item.setDateCreated(new SimpleDateFormat("dd/MM/yyyy").parse(dateCreated));
-//            item.setLastUpdatedDate(new SimpleDateFormat("dd/MM/yyyy").parse(lastUpdatedDate));
-//        } catch (ParseException e) {
-//            System.out.println("Parse ERROR");
-//        }
-//        item.setDescription(description);
-
-        return item;
-    }
 }

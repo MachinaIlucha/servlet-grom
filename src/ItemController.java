@@ -5,21 +5,21 @@ import java.io.IOException;
 
 public class ItemController {
 
-    private ItemService itemService;
+    private MyServlet myServlet;
 
     protected void save(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        itemService.save(req, resp);
+        myServlet.doPost(req, resp);
     }
 
     protected void get(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        itemService.get(req, resp);
+        myServlet.doGet(req, resp);
     }
 
     protected void update(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        itemService.update(req, resp);
+        myServlet.doPut(req, resp);
     }
 
     protected void delete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        itemService.delete(req, resp);
+        myServlet.doDelete(req, resp);
     }
 }
