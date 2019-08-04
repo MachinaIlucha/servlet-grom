@@ -37,6 +37,7 @@ public class ItemDAO {
         } catch (HibernateException e) {
             System.err.println("Update is failed");
             System.err.println(e.getMessage());
+            e.printStackTrace();
         }
         return item;
     }
@@ -53,6 +54,7 @@ public class ItemDAO {
         } catch (HibernateException e) {
             System.err.println("Delete is failed");
             System.err.println(e.getMessage());
+            e.printStackTrace();
         }
         return item;
     }
@@ -76,6 +78,7 @@ public class ItemDAO {
         } catch (HibernateException e) {
             System.err.println("Find method is failed");
             System.err.println(e.getMessage());
+            e.printStackTrace();
 
             if (tr != null)
                 tr.rollback();
